@@ -15,6 +15,6 @@ class Transaction {
         title = "${json['title'] ?? ''}",
         coupon = "${json['coupon'] ?? ''}",
         type = "${json['type'] ?? ''}",
-        createdAt = "${json['created_at'] ?? ''}",
+        createdAt = "${json['createdAtShamsi'] ?? ''}",
         updatedAt = "${json['updated_at'] ?? ''}";
 }

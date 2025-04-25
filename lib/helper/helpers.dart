@@ -3,7 +3,7 @@ import 'dart:core';
 
 import 'package:flutter/foundation.dart';
 
-import 'stubs.dart' if (dart.library.ffi) 'android_ios_stubs.dart';
+import 'web_stubs.dart' if (dart.library.ffi) 'android_ios_stubs.dart';
 
 import 'dart:io';
 
@@ -292,5 +292,25 @@ class Helper {
     res = encrypter.encrypt(str, iv: iv);
 
     return res;
+  }
+
+  shareApp() async {
+    try {
+      // Get package info to find the package name
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      final packageName = packageInfo.packageName;
+
+      // Path to the installed APK
+      final apkPath = '/data/app/$packageName-1/base.apk';
+      final file = File(apkPath);
+
+      if (await file.exists()) {
+        await Share.shareXFiles([XFile(apkPath)], text: 'Check out this app!');
+      } else {
+        print("APK not found at $apkPath");
+      }
+    } catch (e) {
+      print('Error sharing APK: $e');
+    }
   }
 }

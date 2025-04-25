@@ -238,8 +238,8 @@ class UserProfilePage extends StatelessWidget {
                                           child: Row(children: [
                                         Image.asset(
                                           user.value.isActive
-                                              ? '/images/ok.png'
-                                              : '/images/canvel.png',
+                                              ? 'assets/images/ok.png'
+                                              : 'assets/images/cancel.png',
                                           height: style.cardMargin * 2,
                                         ),
                                         if (false)

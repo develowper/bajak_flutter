@@ -24,7 +24,9 @@ import '../helper/helpers.dart';
 import '../page/shop.dart';
 import 'APIProvider.dart';
 import 'UserFilterController.dart';
-import 'dart:html' as html;
+
+import '../helper/android_ios_stubs.dart'
+    if (dart.library.html) 'package:web/web.dart' as web;
 
 class UserController extends GetxController
     with StateMixin<User>, GetTickerProviderStateMixin {
@@ -292,7 +294,7 @@ class UserController extends GetxController
   void logout() async {
     ACCESS_TOKEN = '';
     user = User.nullUser();
-    // Get.offAll(() =>  GetMaterialApp());
+    Get.offNamedUntil('/', (route) => false);
     await getUser(refresh: true);
   }
 
@@ -412,7 +414,7 @@ class UserController extends GetxController
       helper.showToast(msg: parsedJson?['error'] ?? ''.tr, status: 'danger');
     } else if (kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
       // On iOS Safari, use html directly for better compatibility
-      html.window.open(parsedJson['url'], '_blank');
+      web.window.open(parsedJson['url'], '_blank');
     } else if (parsedJson['url'] != null &&
         await canLaunchUrlString(parsedJson['url'])) {
       launchUrlString(parsedJson['url']);

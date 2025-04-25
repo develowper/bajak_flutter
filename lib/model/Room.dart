@@ -36,7 +36,7 @@ class Room {
         winScore = "${json["winScore"] ?? ''}",
         image =
             json['image'] != null ? "${Variable.DOMAIN}/${json['image']}" : '',
-        players = parsePlayers(json['players']),
+        players = parsePlayers(json['players'] ?? '[]'),
         startWithMe = json["startWithMe"] ?? false,
         isActive = json["isActive"] ?? false;
 

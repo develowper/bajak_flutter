@@ -99,7 +99,7 @@ class RoomController extends GetxController with StateMixin<List<Room>> {
     // print(parsedJson);
     if (parsedJson?['error'] != null) {
       helper.showToast(msg: parsedJson?['error'], status: 'danger');
-      return false;
+      return parsedJson;
     } else if (parsedJson == null ||
         parsedJson['data'] == null ||
         parsedJson['data'].length == 0) {

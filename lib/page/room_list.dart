@@ -59,6 +59,7 @@ class _RoomListPageState extends State<RoomListPage> {
       roomGame = Get.arguments['type'];
       roomName = Get.arguments['title'];
     }
+    print('*****initState');
     if (setting.roomRefreshTime > 0) {
       timer = Timer.periodic(
           Duration(seconds: setting.roomRefreshTime), (Timer t) => refresh());
@@ -112,43 +113,44 @@ class _RoomListPageState extends State<RoomListPage> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        room.image != ''
-                                            ? SizedBox(
-                                                height: style.imageHeight / 2,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(
-                                                      style.cardMargin),
-                                                  child: CachedNetworkImage(
-                                                    fit: BoxFit.contain,
-                                                    imageUrl: room.image,
+                                    child: FittedBox(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          room.image != ''
+                                              ? SizedBox(
+                                                  height: style.imageHeight / 2,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(
+                                                        style.cardMargin),
+                                                    child: CachedNetworkImage(
+                                                      fit: BoxFit.contain,
+                                                      imageUrl: room.image,
+                                                    ),
                                                   ),
-                                                ),
-                                              )
-                                            : Text(
-                                                room.title,
-                                                style:
-                                                    style.textHeaderLightStyle,
-                                              ),
-                                        Text(
-                                          room.title,
-                                          style: style.textHeaderLightStyle,
-                                        ),
-                                      ],
+                                                )
+                                              : Center(),
+                                          Text(
+                                            room.title,
+                                            style: style.textHeaderLightStyle,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   AnimateHeart(
                                     repeat: true,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           room.playerCount,
-                                          style: style.textMediumNumberLightStyle,
+                                          style:
+                                              style.textMediumNumberLightStyle,
                                         ),
                                         Text(
                                           'player'.tr,
@@ -195,6 +197,7 @@ class _RoomListPageState extends State<RoomListPage> {
   }
 
   refresh() async {
+    // print("timer $mounted ${setting.roomRefreshTime}");
     if (!mounted && setting.roomRefreshTime > 0) {
       timer?.cancel();
       return;

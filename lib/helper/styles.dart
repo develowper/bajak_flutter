@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 class Style {
   late ThemeData themeData;
-  static String fontFamily = 'Yekan' ?? 'Shabnam' ?? 'Tanha';
+  static String fontFamily = 'Tanha'??'Yekan' ?? 'Shabnam' ?? 'Tanha';
   static String fontFamilyHeader = 'Two';
   static String fontFamilyNumbers = 'Carre';
   late bool isBigSize;

@@ -192,7 +192,7 @@ class MyTranslations extends Translations {
           'login_or_register': 'ابتدا وارد شوید یا ثبت نام کنید',
           'transactions': 'تراکنش ها',
           'transactions_history': 'سوابق تراکنش',
-          'amount': 'مبلغ (تومان)',
+          'amount': 'مبلغ',
           'trace_code': 'کد رهگیری',
           'new_ticket': 'تیکت جدید',
           'ticket_list': 'لیست تیکت ها',

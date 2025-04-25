@@ -130,6 +130,7 @@ class _AppBarState extends State<MyAppBar>
                                 AnimatedButton(
                                   onTap: () => Get.toNamed('/ProfilePage'),
                                   child: Container(
+                                    // constraints: BoxConstraints(maxWidth: style.tabHeight),
                                     // margin: EdgeInsets.symmetric(
                                     //   horizontal: style.cardMargin * 4,
                                     //   vertical: style.cardMargin,
@@ -138,8 +139,13 @@ class _AppBarState extends State<MyAppBar>
                                         Image.asset("assets/images/menu.png"),
                                   ),
                                 ),
-                                Text(widget.title??'',style: widget.style.textHeaderLightStyle,),
+                                Expanded(
+                                  child: FittedBox(
+                                    fit:BoxFit.contain,
+                                      child: Text(widget.title??'',style: widget.style.textHeaderLightStyle,)),
+                                ),
                                 FittedBox(
+                                  fit:BoxFit.fitHeight,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisAlignment:

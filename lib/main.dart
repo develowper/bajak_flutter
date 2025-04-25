@@ -51,8 +51,9 @@ import 'widget/shakeanimation.dart';
 import 'widget/side_menu.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import 'helper/stubs.dart' if (dart.library.html) 'dart:html' as html;
-import 'helper/stubs.dart' if (dart.library.html) 'helper/telegram.dart';
+import 'helper/web_stubs.dart' if (dart.library.html) 'package:web/web.dart'
+    as web;
+import 'helper/web_stubs.dart' if (dart.library.html) 'helper/telegram.dart';
 
 late AppLinks? _appLinks;
 Uri? deepLink;
@@ -126,7 +127,7 @@ class MyApp extends StatelessWidget {
     // final translate = Get.put(MyTranslations());
     // Get.updateLocale(const Locale('fa', 'IR'));
     if (kIsWeb) {
-      html.window.onPopState.listen((event) {
+      web.window.onPopState.listen((event) {
         if (Get.currentRoute != '/') {
           Get.back(
             result: true,
@@ -312,7 +313,7 @@ class MainPage extends StatefulWidget {
           //     .startGame(daberna: Daberna.fromJson(settingController.game));
           //   final result = Get.toNamed('/daberna/RoomList',
           //       arguments: settingController.games[0]);
-          Get.toNamed('/TransactionsPage');
+          // Get.toNamed('/Transactions');
         },
       );
     });
@@ -382,50 +383,78 @@ class _MainPageState extends State<MainPage> {
         child: ListView(
           physics: BouncingScrollPhysics(),
           shrinkWrap: true,
+          padding: EdgeInsets.zero,
           children: [
-            Column(
-              children: [
-                for (var game in widget.settingController.games)
-                  Column(
-                    children: [
-                      AnimatedButton(
-                        child: Image.asset("/images/menu/${game['type']}.png"),
-                        onTap: () {
-                          final result = Get.toNamed(
-                              '/${game['type']}/RoomList',
-                              arguments: game);
-                          // final result = Get.to(() => RoomListPage());
-
-                          // userController.updateBalance(null);
-                        },
-                      ),
-                    ],
+            for (var game in widget.settingController.games)
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: AnimatedButton(
+                  child: Image.asset(
+                    "assets/images/menu/${game['type']}.png",
+                    fit: BoxFit.fill,
                   ),
-              ],
+                  onTap: () {
+                    final result =
+                        Get.toNamed('/${game['type']}/RoomList', arguments: game);
+                    // final result = Get.to(() => RoomListPage());
+
+                    // userController.updateBalance(null);
+                  },
+                ),
+              ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedButton(
+                onTap: () => Get.toNamed('/ShopPage'),
+                child: Image.asset(
+                  "assets/images/menu/deposit.png",
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
-            AnimatedButton(
-              onTap: () => Get.toNamed('/ShopPage'),
-              child: Image.asset("/images/menu/deposit.png"),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedButton(
+                onTap: () => Get.toNamed('/WithdrawPage'),
+                child: Image.asset("assets/images/menu/withdraw.png",
+                  fit: BoxFit.fill,),
+              ),
             ),
-            AnimatedButton(
-              onTap: () => Get.toNamed('/WithdrawPage'),
-              child: Image.asset("/images/menu/withdraw.png"),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedButton(
+                  onTap: () => Get.toNamed('/WinWheel'),
+                  child: Image.asset("assets/images/menu/winwheel.png",
+                    fit: BoxFit.fill,)),
             ),
-            AnimatedButton(
-                onTap: () => Get.toNamed('/WinWheel'),
-                child: Image.asset("/images/menu/winwheel.png")),
-            AnimatedButton(
-                onTap: () => Get.toNamed('/ProfilePage'),
-                child: Image.asset("/images/menu/profile.png")),
-            AnimatedButton(
-                onTap: () => Get.toNamed('/Transactions'),
-                child: Image.asset("/images/menu/reports.png")),
-            AnimatedButton(
-                onTap: () => Get.toNamed('/ContactPage'),
-                child: Image.asset("/images/menu/support.png")),
-            AnimatedButton(
-                onTap: () => Get.toNamed('/PolicyPage'),
-                child: Image.asset("/images/menu/policy.png")),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedButton(
+                  onTap: () => Get.toNamed('/ProfilePage'),
+                  child: Image.asset("assets/images/menu/profile.png",
+                    fit: BoxFit.fill,)),
+            ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedButton(
+                  onTap: () => Get.toNamed('/Transactions'),
+                  child: Image.asset("assets/images/menu/reports.png",
+                    fit: BoxFit.fill,)),
+            ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedButton(
+                  onTap: () => Get.toNamed('/ContactPage'),
+                  child: Image.asset("assets/images/menu/support.png",
+                    fit: BoxFit.fill,)),
+            ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedButton(
+                  onTap: () => Get.toNamed('/PolicyPage'),
+                  child: Image.asset("assets/images/menu/policy.png",
+                    fit: BoxFit.fill,)),
+            ),
           ],
         ),
       ),

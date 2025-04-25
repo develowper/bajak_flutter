@@ -66,84 +66,85 @@ class TransactionsPage extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: MyAppBar(
         title: 'transactions'.tr,
-        child: RefreshIndicator(
-          onRefresh: () => controller.getData(param: {'page': 'clear'}),
-          child: SafeArea(
-            child: Column(
-              children: [
-                SearchSection(
-                  filterSection: TransactionFilterSection(
-                    controller: controller,
-                  ),
+        // child:
+        // RefreshIndicator(
+        //   onRefresh: () => controller.getData(param: {'page': 'clear'}),
+        child: SafeArea(
+          child: Column(
+            children: [
+              SearchSection(
+                filterSection: TransactionFilterSection(
                   controller: controller,
-                  hintText: controller.filterController.searchHintText,
                 ),
-                Expanded(
-                  child: controller.obx((data) {
-                    if (style.gridLength < 2) {
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              controller: scrollController,
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: false,
-                              itemCount: data!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return GridTransaction(
-                                  data: data[index],
-                                  controller: controller,
-                                  settingController: settingController,
-                                  style: style,
-                                  colors: colors,
-                                );
-                              },
-                            ),
+                controller: controller,
+                hintText: controller.filterController.searchHintText,
+              ),
+              Expanded(
+                child: controller.obx((data) {
+                  if (style.gridLength < 2) {
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            controller: scrollController,
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: false,
+                            itemCount: data!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GridTransaction(
+                                data: data[index],
+                                controller: controller,
+                                settingController: settingController,
+                                style: style,
+                                colors: colors,
+                              );
+                            },
                           ),
-                          controller.loading ? Loader() : Center()
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: GridView.builder(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: false,
-                              controller: scrollController,
-                              itemCount: data!.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: style.gridLength,
-                                      childAspectRatio: 1.5),
-                              itemBuilder: (BuildContext context, int index) {
-                                return GridTransaction(
-                                  data: data[index],
-                                  controller: controller,
-                                  settingController: settingController,
-                                  style: style,
-                                  colors: colors,
-                                );
-                              },
-                            ),
+                        ),
+                        controller.loading ? Loader() : Center()
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: GridView.builder(
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: false,
+                            controller: scrollController,
+                            itemCount: data!.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: style.gridLength,
+                                    childAspectRatio: 1.5),
+                            itemBuilder: (BuildContext context, int index) {
+                              return GridTransaction(
+                                data: data[index],
+                                controller: controller,
+                                settingController: settingController,
+                                style: style,
+                                colors: colors,
+                              );
+                            },
                           ),
-                          controller.loading ? Loader() : Center()
-                        ],
-                      );
-                    }
-                  },
-                      onEmpty: MyRefresh(
-                        onRefresh: refresh,
-                      ),
-                      onLoading: Loader(
-                        color: Colors.white,
-                      )),
-                ),
-              ],
-            ),
+                        ),
+                        controller.loading ? Loader() : Center()
+                      ],
+                    );
+                  }
+                },
+                    onEmpty: MyRefresh(
+                      onRefresh: refresh,
+                    ),
+                    onLoading: Loader(
+                      color: Colors.white,
+                    )),
+              ),
+            ],
           ),
         ),
+        // ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       // floatingActionButton: FloatingActionButton(

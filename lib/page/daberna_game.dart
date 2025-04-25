@@ -108,7 +108,21 @@ class DabernaGame extends StatelessWidget {
     daberna.numbers.insert(0, ' ');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       mounted = true;
-
+      // for (var i = 0; i < 63; i++) {
+      //   daberna.boards.forEach((board) {
+      //     board.card.forEach((row) {
+      //       row.forEach((col) {
+      //         if (col.value == "${daberna.numbers[playIndex]}") {
+      //           col.value = '';
+      //
+      //           col.refresh();
+      //         }
+      //       });
+      //     });
+      //   });
+      //   level.value++;
+      //   playIndex++;
+      // }
       startTimer();
     });
   }
@@ -130,6 +144,7 @@ class DabernaGame extends StatelessWidget {
           player.stop();
           player.dispose();
           confettiController.dispose();
+          callTimer.cancel();
           // _audioPlayer.stop();
           // _audioPlayer.dispose();
           Future.delayed(const Duration(seconds: 2),
@@ -276,7 +291,7 @@ class DabernaGame extends StatelessWidget {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: style
-                                                          .textSmallLightStyle,
+                                                          .textTinyLightStyle,
                                                     ),
                                                     VerticalDivider(
                                                       color: Colors.white
@@ -289,7 +304,7 @@ class DabernaGame extends StatelessWidget {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: style
-                                                          .textSmallLightStyle,
+                                                          .textTinyLightStyle,
                                                     ),
                                                   ],
                                                 ),
@@ -378,7 +393,7 @@ class DabernaGame extends StatelessWidget {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: style
-                                                          .textSmallLightStyle,
+                                                          .textTinyLightStyle,
                                                     ),
                                                     VerticalDivider(
                                                       color: Colors.white
@@ -391,7 +406,7 @@ class DabernaGame extends StatelessWidget {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: style
-                                                          .textSmallLightStyle,
+                                                          .textTinyLightStyle,
                                                     ),
                                                   ],
                                                 ),
@@ -506,18 +521,38 @@ class DabernaGame extends StatelessWidget {
           ("${daberna.numbers[index]}".length == 1 ? ' ' : '') +
               "${daberna.numbers[index]}");
       vibrate(index);
-      level.value++;
+
       // print("${level.value} ${winLevel}");
       // print("${level.value} ${rowWinLevel}");
-      daberna.boards.forEach((item) {
-        item.card.forEach((row) {
+
+      daberna.boards.forEach((board) {
+        board.card.forEach((row) {
           row.forEach((col) {
             if (col.value == "${daberna.numbers[index]}") {
+              // col.value = ' ';
+
               col.refresh();
+              Future.delayed(Duration(milliseconds: 500), () {
+                col.value = '';
+                if (daberna.rowWinners
+                        .map((r) => r['user_id'])
+                        .contains(board.playerId) &&
+                    rowWinLevel == index &&
+                    row.every((c) => c == '')) {
+                  row.forEach((co) => co.value = ' ');
+                }
+              });
+
+              // col.update((String? val) {
+              //   col.value = '';
+              //   return '';
+              // });
+              // col.update((String? val)=>'' );
             }
           });
         });
       });
+      level.value++;
       playIndex++;
     } else {
       Future.delayed(Duration(milliseconds: numberDelayMilli), () {
@@ -674,23 +709,31 @@ class DabernaGame extends StatelessWidget {
   }
 
   Widget BoardCell(col, row) {
-    return BlinkingSwitch(
-      firstChild: Center(
-        child: Text(
-          "${col.value}".toEng(),
-          textAlign: TextAlign.center,
-          style: style.textMediumNumberStyle,
+    // print("${row},${row.every((i) => i.value == '  ' || i.value=='')}");
+
+    return Stack(
+      children: [
+        Center(
+          child: BlinkingSwitch(
+            firstChild: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                "${col.value}",
+                textAlign: TextAlign.center,
+                style:
+                    style.textMediumNumberStyle.copyWith(color: Colors.black),
+              ),
+            ),
+            secondChild: Container(color: Colors.transparent),
+            changeKey: col,
+            blinkCount: 3,
+            blinkDuration: const Duration(milliseconds: 300),
+            fadeDuration: const Duration(milliseconds: 200),
+          ),
         ),
-      ),
-      secondChild: Container(
-          color: /* row.every((i) => i.value == '')
-              ? Colors.cyanAccent
-              :*/
-              Colors.transparent),
-      changeKey: col,
-      blinkCount: 3,
-      blinkDuration: const Duration(milliseconds: 300),
-      fadeDuration: const Duration(milliseconds: 200),
+        if (row.every((i) => i.value == ' '))
+          Container(color: Colors.cyanAccent)
+      ],
     );
   }
 
@@ -753,12 +796,12 @@ class DabernaGame extends StatelessWidget {
             Container(
                 padding: EdgeInsets.all(style.cardMargin / 2),
                 decoration: BoxDecoration(
-                  // borderRadius: BorderRadius.circular(style.cardMargin),
-                  border: Border.all(
-                    color: style.primaryColor,
-                  ),
-                  color: style.primaryColor,
-                ),
+                    // borderRadius: BorderRadius.circular(style.cardMargin),
+                    // border: Border.all(
+                    //   color: style.primaryColor,
+                    // ),
+                    // color: style.primaryColor,
+                    ),
                 child: GridView.builder(
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
@@ -781,22 +824,22 @@ class DabernaGame extends StatelessWidget {
                     final cell = board.card[rowIndex][colIndex];
 
                     return Container(
-                      margin: const EdgeInsets.all(1),
+                      // margin: const EdgeInsets.all(1),
                       alignment: Alignment.center,
                       width: cellSize.value,
                       height: cellSize.value,
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: style.primaryMaterial[400]!.withAlpha(100),
-                            blurRadius: 2.0,
-                            spreadRadius: 2,
-                          ),
-                        ],
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: style.primaryMaterial[400]!.withAlpha(5),
+                        //     blurRadius: 2.0,
+                        //     spreadRadius: 2,
+                        //   ),
+                        // ],
                         color: cell.value == ''
                             ? const Color.fromARGB(255, 255, 255, 255)
                             : Colors.white,
-                        border: Border.all(color: style.primaryColor),
+                        border: Border.all(color: Colors.black, width: 2),
                       ),
                       child: BoardCell(cell, board.card[rowIndex]),
                     );

@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 
 class Variable {
   // static String DOMAIN = "http://172.16.6.2:11835";
-  static String DOMAIN = "http://127.0.0.1:3298";
+  // static String DOMAIN = "http://127.0.0.1:4432";
 
-  // static String DOMAIN = "https://daberna.soheilmarket.ir";
+  static String DOMAIN = "https://bajak.sib-market.ir";
 
   static String LINK_STORAGE = "${DOMAIN}/storage";
   static String LINK_STORAGE_USERS = "${DOMAIN}/storage/users";
@@ -79,7 +79,7 @@ class Variable {
       : MARKET == 'myket'
           ? "https://myket.ir/app/$PACKAGE"
           : "https://play.google.com/store/apps/details?id=$PACKAGE&hl=${Variable.LANG}";
-  static String APP_LABEL = LANG == 'fa' ? 'دبرنا' : 'Daberna';
+  static String APP_LABEL = LANG == 'fa' ? 'دبرنا بجک' : 'Daberna';
 
   static List<String> KEYWORDS = [
     'دبرنا',

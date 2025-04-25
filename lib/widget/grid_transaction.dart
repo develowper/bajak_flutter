@@ -34,7 +34,7 @@ class GridTransaction extends StatelessWidget {
     required this.style,
     required this.colors,
   }) {
-    titleStyle = style.textMediumStyle.copyWith(color: colors[900]);
+    titleStyle = style.textMediumStyle/*.copyWith(color: colors[900])*/;
     userController = Get.find<UserController>();
     this.data = Rx<Transaction>(data);
   }
@@ -49,7 +49,7 @@ class GridTransaction extends StatelessWidget {
               child: Card(
                 elevation: 20,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(style.cardBorderRadius),
+                  borderRadius: BorderRadius.circular(style.cardMargin),
                 ),
                 shadowColor: colors[500]?.withOpacity(.7),
                 margin: EdgeInsets.symmetric(
@@ -88,7 +88,7 @@ class GridTransaction extends StatelessWidget {
                                     children: [
                                       Text(
                                         "${data.value.createdAt}",
-                                        style: style.textSmallStyle ,
+                                        style: style.textSmallStyle,
                                       ),
                                     ],
                                   ),
@@ -108,7 +108,6 @@ class GridTransaction extends StatelessWidget {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
-
                                       ],
                                     ),
                                   ),
@@ -121,14 +120,14 @@ class GridTransaction extends StatelessWidget {
                                       thickness: 3,
                                       indent: style.cardMargin,
                                       endIndent: style.cardMargin,
-                                      color: colors[100],
+                                      color: colors[50],
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: style.cardMargin),
                                     child: IntrinsicHeight(
-                                      child: Row(
+                                      child: Column(
                                         children: [
                                           miniCell(
                                               title: 'amount'.tr,
@@ -137,10 +136,10 @@ class GridTransaction extends StatelessWidget {
                                                   ? Colors.red
                                                   : Colors.teal,
                                               child:
-                                                  data.value.amount.asPrice()),
+                                                  "${data.value.amount.asPrice()} ${'currency'.tr}"),
                                           miniCell(
                                               title: 'trace_code'.tr,
-                                              colors: Colors.brown,
+                                              colors: Colors.indigo ,
                                               child: data.value.id),
                                           if (data.value.coupon != '')
                                             miniCell(
@@ -175,53 +174,49 @@ class GridTransaction extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(style.cardMargin)),
-        child: Column(
-          children: [
-            TextButton(
-                style: style.buttonStyle(
-                    splashColor: colors[100],
-                    radius: BorderRadius.circular(style.cardMargin),
-                    backgroundColor: colors[50]),
-                onPressed: () => null,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Center(
-                      child: Text(
-                        title,
-                        style: titleStyle.copyWith(
-                            color: colors[800], fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
+        child: TextButton(
+            style: style.buttonStyle(
+                splashColor: colors[100],
+                radius: BorderRadius.circular(style.cardMargin),
+                backgroundColor: colors[50]),
+            onPressed: () => null,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Center(
+                  child: Text(
+                    title,
+                    style: titleStyle.copyWith(
+                        color: colors[800], fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: style.cardMargin,
+                      vertical: style.cardMargin / 2),
+                  child: Divider(
+                    height: 1,
+                    thickness: 3,
+                    indent: style.cardMargin,
+                    endIndent: style.cardMargin,
+                    color: colors[100],
+                  ),
+                ),
+                Center(
+                  child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: style.cardMargin,
-                          vertical: style.cardMargin / 2),
-                      child: Divider(
-                        height: 1,
-                        thickness: 3,
-                        indent: style.cardMargin,
-                        endIndent: style.cardMargin,
-                        color: colors[100],
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: style.cardMargin),
-                          child: child.runtimeType == String
-                              ? Text(
-                                  child,
-                                  style: style.textMediumStyle
-                                      .copyWith(color: colors[500]),
-                                )
-                              : child),
-                    ),
-                  ],
-                ))
-          ],
-        ),
+                          horizontal: style.cardMargin),
+                      child: child.runtimeType == String
+                          ? Text(
+                              child,
+                              style: style.textMediumStyle
+                                  .copyWith(color: colors[500]),
+                            )
+                          : child),
+                ),
+              ],
+            )),
       ),
     );
   }

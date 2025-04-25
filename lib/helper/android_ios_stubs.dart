@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 
+var window;
+
 Map getFromC() {
   final DynamicLibrary nativeAddLib = Platform.isAndroid
       ? DynamicLibrary.open("libsec.so")

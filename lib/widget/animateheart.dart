@@ -84,7 +84,7 @@ class _AnimateHeartState extends State<AnimateHeart>
       Future.delayed(Duration(milliseconds: Random().nextInt(800)),
           () => {if (mounted) controller.repeat()});
     } else {
-      await controller.forward();
+      if (mounted) await controller.forward();
       // controller.reverse();
     }
   }

@@ -82,9 +82,9 @@ class RegisterLoginScreen extends StatelessWidget {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   textPhoneController.text = '';
     //   textFullNameController.text = 'نام تست';
-    textUsernameController.text = 'mojraj';
+    // textUsernameController.text = 'mojraj';
     //   textEmailController.text = 'moj2raj2@hotmail.com';
-    textPasswordController.text = '123123';
+    // textPasswordController.text = '123123';
     // textPasswordVerifyController.text = '123123';
     //   textSmsCodeController.text = '00654';
     //   // loginRegister();

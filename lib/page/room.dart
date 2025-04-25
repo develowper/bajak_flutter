@@ -121,7 +121,7 @@ class _RoomPageState extends State<RoomPage> {
       onPopInvokedWithResult: (didPop, res) async {
         Future.delayed(const Duration(seconds: 2),
             () => userController.updateBalance(null));
-        Get.offNamed('/RoomList');
+        // Get.offNamed('/RoomList');
         return Future.value(true);
       },
       child: SafeArea(
@@ -485,8 +485,10 @@ class _RoomPageState extends State<RoomPage> {
     });
     widget.socket.on("room-update", (data) {
       // print("---------room-update ${widget.socket.socket?.id}");
-      // print("  ${data}");
-      room?.value.players = (jsonDecode(data['players'] ?? '[]'))
+      // print('-------------------------');
+      // print(jsonDecode(data['players'] ?? '[]'));
+      // print('-------------------------');
+      room?.value.players = ((jsonDecode(data['players'] ?? '[]')) ?? [])
           .map<RoomPlayer>((item) => RoomPlayer.fromJson({
                 'user_id': item['user_id'],
                 'username': item['username'],
@@ -514,7 +516,7 @@ class _RoomPageState extends State<RoomPage> {
       }
     });
     widget.socket.on("game-start", (data) {
-      // print("---------game-start ${socket.socket}");
+      // print("---------game-start");
       // print("  ${data}");
 
       controller.startGame(daberna: Daberna.fromJson(data));
@@ -528,7 +530,7 @@ class _RoomPageState extends State<RoomPage> {
 
     if (data.length > 0) room?.value = data[0];
 
-    if ((room?.value.secondsRemaining ?? 0) > 0) {
+    if ((room?.value.secondsRemaining ?? 0) > 0 && mounted) {
       countDownController.restart(duration: room?.value.secondsRemaining);
     }
     // print("============${userController.user.id}");
@@ -554,10 +556,11 @@ class _RoomPageState extends State<RoomPage> {
     loading.value = true;
     var res = await controller.payAndJoinRoom(
         roomType: widget.room?.type ?? '', cardCount: cardCount.value);
+    // print(res);
     loading.value = false;
     if (res?['user_balance'] != null) {
       userController.updateBalance(int.parse("${res['user_balance']}"),
-          reset: true);
+          reset: false);
       userBalance.value = "${res['user_balance']}";
       userController.user.financial.balance =
           int.parse("${res['user_balance']}");

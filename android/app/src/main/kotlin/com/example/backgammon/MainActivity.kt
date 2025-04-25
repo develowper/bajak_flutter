@@ -1,4 +1,4 @@
-package com.paris.daberna
+package com.bajak.daberna
 
 import io.flutter.embedding.android.FlutterActivity
 
