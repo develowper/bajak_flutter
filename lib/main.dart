@@ -149,6 +149,8 @@ class MyApp extends StatelessWidget {
         unknownRoute: GetPage(name: '/', page: () => MyHomePage()),
         initialRoute: '/',
         opaqueRoute: true,
+        defaultTransition: Transition.fade,
+        // 👈 تغییر پیش‌فرض
         // navigatorObservers: [GetObserver()],
         getPages: [
           GetPage(name: '/', page: () => MyHomePage()),
@@ -394,8 +396,8 @@ class _MainPageState extends State<MainPage> {
                     fit: BoxFit.fill,
                   ),
                   onTap: () {
-                    final result =
-                        Get.toNamed('/${game['type']}/RoomList', arguments: game);
+                    final result = Get.toNamed('/${game['type']}/RoomList',
+                        arguments: game);
                     // final result = Get.to(() => RoomListPage());
 
                     // userController.updateBalance(null);
@@ -416,44 +418,56 @@ class _MainPageState extends State<MainPage> {
               fit: BoxFit.scaleDown,
               child: AnimatedButton(
                 onTap: () => Get.toNamed('/WithdrawPage'),
-                child: Image.asset("assets/images/menu/withdraw.png",
-                  fit: BoxFit.fill,),
+                child: Image.asset(
+                  "assets/images/menu/withdraw.png",
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: AnimatedButton(
                   onTap: () => Get.toNamed('/WinWheel'),
-                  child: Image.asset("assets/images/menu/winwheel.png",
-                    fit: BoxFit.fill,)),
+                  child: Image.asset(
+                    "assets/images/menu/winwheel.png",
+                    fit: BoxFit.fill,
+                  )),
             ),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: AnimatedButton(
                   onTap: () => Get.toNamed('/ProfilePage'),
-                  child: Image.asset("assets/images/menu/profile.png",
-                    fit: BoxFit.fill,)),
+                  child: Image.asset(
+                    "assets/images/menu/profile.png",
+                    fit: BoxFit.fill,
+                  )),
             ),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: AnimatedButton(
                   onTap: () => Get.toNamed('/Transactions'),
-                  child: Image.asset("assets/images/menu/reports.png",
-                    fit: BoxFit.fill,)),
+                  child: Image.asset(
+                    "assets/images/menu/reports.png",
+                    fit: BoxFit.fill,
+                  )),
             ),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: AnimatedButton(
                   onTap: () => Get.toNamed('/ContactPage'),
-                  child: Image.asset("assets/images/menu/support.png",
-                    fit: BoxFit.fill,)),
+                  child: Image.asset(
+                    "assets/images/menu/support.png",
+                    fit: BoxFit.fill,
+                  )),
             ),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: AnimatedButton(
                   onTap: () => Get.toNamed('/PolicyPage'),
-                  child: Image.asset("assets/images/menu/policy.png",
-                    fit: BoxFit.fill,)),
+                  child: Image.asset(
+                    "assets/images/menu/policy.png",
+                    fit: BoxFit.fill,
+                  )),
             ),
           ],
         ),
