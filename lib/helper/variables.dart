@@ -6,7 +6,7 @@ class Variable {
   // static String DOMAIN = "http://172.16.6.2:11835";
   // static String DOMAIN = "http://127.0.0.1:4432";
 
-  static String DOMAIN = "https://bajak.sib-market.ir";
+  static String DOMAIN = "https://game.44shop.ir";
 
   static String LINK_STORAGE = "${DOMAIN}/storage";
   static String LINK_STORAGE_USERS = "${DOMAIN}/storage/users";
@@ -54,32 +54,33 @@ class Variable {
 //  static Map<String, dynamic> params4 = {'page': '1', 'group_id': '4'};
 
   static Locale LOCALE =
-      LANG != 'fa' ? Locale('en', 'US') : Locale('fa', 'IR'); //bazaar
+  LANG != 'fa' ? Locale('en', 'US') : Locale('fa', 'IR'); //bazaar
   static String MARKET = ''; //bazaar,myket,bank
   static String BOT_ID = 'dbrna_bot';
   static String APP_ID = '1';
   static String LANG = 'fa';
   static String PHONE = "";
-  static String SERVICE_NAME = 'dabernaBajak';
-  static String FOLDER_NAME = 'Daberna_Bajak';
-  static String APP_NAME = 'daberna_bajak';
+  static String SERVICE_NAME = 'dabernawinner';
+  static String FOLDER_NAME = 'Daberna_winner';
+  static String APP_NAME = 'daberna_winner';
 
   // static String APP_LABEL = 'Esteghlal';
 
-  static String PACKAGE = 'com.bajak.daberna';
+  static String PACKAGE = 'com.winner.daberna';
 
   static String SERVICE_DEVELOPER = MARKET == 'bazaar'
       ? ''
       : MARKET == 'myket'
-          ? ''
-          : '';
+      ? ''
+      : '';
 
   static String APP_ADDRESS = MARKET == 'bazaar'
       ? "https://cafebazaar.ir/app/$PACKAGE"
       : MARKET == 'myket'
-          ? "https://myket.ir/app/$PACKAGE"
-          : "https://play.google.com/store/apps/details?id=$PACKAGE&hl=${Variable.LANG}";
-  static String APP_LABEL = LANG == 'fa' ? 'دبرنا بجک' : 'Daberna';
+      ? "https://myket.ir/app/$PACKAGE"
+      : "https://play.google.com/store/apps/details?id=$PACKAGE&hl=${Variable
+      .LANG}";
+  static String APP_LABEL = LANG == 'fa' ? 'دبرنا وینر' : 'Daberna';
 
   static List<String> KEYWORDS = [
     'دبرنا',

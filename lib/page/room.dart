@@ -486,16 +486,17 @@ class _RoomPageState extends State<RoomPage> {
     widget.socket.on("room-update", (data) {
       // print("---------room-update ${widget.socket.socket?.id}");
       // print('-------------------------');
-      // print(jsonDecode(data['players'] ?? '[]'));
+      // print(data['players']);
+      // print(data['players']?.runtimeType);
       // print('-------------------------');
-      room?.value.players = ((jsonDecode(data['players'] ?? '[]')) ?? [])
+      room?.value.players = (jsonDecode(data['players'] ?? '[]') ?? [])
           .map<RoomPlayer>((item) => RoomPlayer.fromJson({
                 'user_id': item['user_id'],
                 'username': item['username'],
                 'card_count': item['card_count'],
               }))
           .toList();
-
+      // print(room?.value.players[0].cardCount);
       room?.value.playerCount =
           "${data['player_count'] ?? room?.value.playerCount}";
       room?.value.cardCount = "${data['card_count'] ?? room?.value.cardCount}";
@@ -559,11 +560,10 @@ class _RoomPageState extends State<RoomPage> {
     // print(res);
     loading.value = false;
     if (res?['user_balance'] != null) {
-      userController.updateBalance(int.parse("${res['user_balance']}"),
-          reset: false);
       userBalance.value = "${res['user_balance']}";
       userController.user.financial.balance =
           int.parse("${res['user_balance']}");
+      userController.updateBalance(null);
     }
   }
 }

@@ -383,11 +383,13 @@ class UserController extends GetxController
     change(GetStatus.success(user));
   }
 
-  void updateBalance(balance, {bool reset = false}) async {
+  void updateBalance(balance, {bool reset = false, add = true}) async {
     if (balance == null || balance == 0) {
       user.financial.balance += 0;
-    } else {
+    } else if (add) {
       user.financial.balance += balance as int;
+    } else {
+      user.financial.balance = balance as int;
     }
     print("updateBalance ${balance} to ${user.financial.balance}");
     // change(GetStatus.empty());

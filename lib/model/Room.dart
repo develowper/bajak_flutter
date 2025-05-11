@@ -74,5 +74,8 @@ class RoomPlayer {
   RoomPlayer.fromJson(Map<String, dynamic> json)
       : playerId = "${json["user_id"] ?? 0}",
         username = "${json["username"] ?? ''}",
-        cardCount = int.parse("${json["card_count"] ?? 0}");
+        cardCount = int.parse("${json["card_count"] ?? 0}") {
+    // print(
+    //     'Parsed RoomPlayer -> id: $playerId, username: $username, cardCount: $cardCount');
+  }
 }
