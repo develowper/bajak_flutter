@@ -55,7 +55,7 @@ class Variable {
 
   static Locale LOCALE =
   LANG != 'fa' ? Locale('en', 'US') : Locale('fa', 'IR'); //bazaar
-  static String MARKET = ''; //bazaar,myket,bank
+  static String MARKET = 'telegram'; //bazaar,myket,bank
   static String BOT_ID = 'dbrna_bot';
   static String APP_ID = '1';
   static String LANG = 'fa';

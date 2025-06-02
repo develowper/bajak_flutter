@@ -25,6 +25,8 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'dart:async';
 
 class RoomListPage extends StatefulWidget {
+  static bool isMounted = true;
+
   RoomListPage({
     Key? key,
   }) : super(key: key) {}
@@ -61,8 +63,8 @@ class _RoomListPageState extends State<RoomListPage> {
     }
     print('*****initState');
     if (setting.roomRefreshTime > 0) {
-      timer = Timer.periodic(
-          Duration(seconds: setting.roomRefreshTime), (Timer t) => refresh());
+      timer = Timer.periodic(Duration(seconds: setting.roomRefreshTime),
+          (Timer t) => RoomListPage.isMounted ? refresh() : null);
     }
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       refresh();
@@ -166,19 +168,20 @@ class _RoomListPageState extends State<RoomListPage> {
                           // final res = Get.toNamed('/RoomPage', arguments: room);
                           // final res = Get.toNamed('/RoomPage/${room.type}',
                           //     arguments: room);
-                          timer?.cancel();
+                          // timer?.cancel();
+                          RoomListPage.isMounted = false;
                           final res =
                               await Get.toNamed(room.page, arguments: room);
 
-                          if (res != null && res == true) {
-                            if (setting.roomRefreshTime > 0) {
-                              timer = Timer.periodic(
-                                  Duration(seconds: setting.roomRefreshTime),
-                                  (Timer t) => refresh());
-                            } else {
-                              refresh();
-                            }
-                          }
+                          // if (res != null && res == true) {
+                          //   if (setting.roomRefreshTime > 0) {
+                          //     timer = Timer.periodic(
+                          //         Duration(seconds: setting.roomRefreshTime),
+                          //         (Timer t) => refresh());
+                          //   } else {
+                          //     refresh();
+                          //   }
+                          // }
                           //   userController.updateBalance(null);
                         })
                 ],

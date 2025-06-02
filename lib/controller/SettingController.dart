@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:games/page/shop.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -30,6 +31,7 @@ class SettingController extends APIController<Map<String, dynamic>>
   List games = [];
   List rooms = [];
   List coins = [];
+  List headerMessages = [];
   List ticketStatuses = [];
   String chargeTitle = '';
   String cardToCardTitle = '';
@@ -77,7 +79,7 @@ class SettingController extends APIController<Map<String, dynamic>>
   late List<dynamic> categories;
   late Map<String, dynamic> types;
 
-  App? appInfo;
+  late App appInfo;
   Map<String, dynamic> _data = {};
   late String _storageLink;
 
@@ -158,6 +160,10 @@ class SettingController extends APIController<Map<String, dynamic>>
       rooms = _data['rooms'] ?? [];
       games = _data['games'] ?? [];
       coins = _data['coins'] ?? [];
+      headerMessages = (_data['header_messages'] ?? [])
+          .map((e) => {'msg': e, 'visible': true.obs})
+          .toList();
+
       coins.sort((b, a) => a.compareTo(b));
       ticketStatuses = _data['ticket_statuses'];
       chargeTitle = "${_data['charge_title']}";
@@ -370,7 +376,7 @@ class SettingController extends APIController<Map<String, dynamic>>
   }
 
   bool showUpdateDialogIfRequired() {
-    if (!(appInfo?.needUpdate ?? false)) {
+    if (!appInfo.needUpdate || kIsWeb) {
       return false;
     } else {
       Get.dialog(
@@ -390,8 +396,8 @@ class SettingController extends APIController<Map<String, dynamic>>
                       Padding(
                         padding: EdgeInsets.all(style.cardMargin),
                         child: Text(
-                          'new_version_exists'.tr,
-                          style: style.textBigStyle.copyWith(
+                          appInfo.updateMessage,
+                          style: style.textHeaderStyle.copyWith(
                               color: Colors.green, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -421,9 +427,9 @@ class SettingController extends APIController<Map<String, dynamic>>
                                     ),
                                   ))),
                               onPressed: () async {
-                                if (await canLaunchUrl(
-                                    Uri.parse(appInfo!.marketLink))) {
-                                  launchUrl((Uri.parse(appInfo!.marketLink)),
+                                if (await canLaunchUrlString(
+                                    appInfo.updateLink)) {
+                                  launchUrlString(appInfo.updateLink,
                                       mode: LaunchMode.externalApplication);
                                 }
                                 Get.back();

@@ -114,8 +114,8 @@ class RoomController extends GetxController with StateMixin<List<Room>> {
   }
 
   void startGame({required Daberna daberna}) {
-    Get.back();
+    // Get.back();
     // Get.to(() => DabernaGame(daberna: daberna));
-    Get.toNamed('/DabernaGame', arguments: daberna);
+    Get.offNamed('/DabernaGame', arguments: daberna);
   }
 }

@@ -5,6 +5,7 @@ import 'package:games/controller/RoomController.dart';
 import 'package:games/controller/SocketController.dart';
 import 'package:games/helper/extensions.dart';
 import 'package:games/main.dart';
+import 'package:games/page/room_list.dart';
 import 'package:games/widget/AnimatedButton.dart';
 import 'package:games/widget/AppBar.dart';
 import 'package:games/widget/CircleTimer.dart';
@@ -80,7 +81,7 @@ class _RoomPageState extends State<RoomPage> {
   Rx players = Rx([]);
 
   CountDownController countDownController = CountDownController();
-  late Rx room;
+  Rx room = Rx<Room>(Room.fromNull());
 
   @override
   void initState() {
@@ -122,6 +123,7 @@ class _RoomPageState extends State<RoomPage> {
         Future.delayed(const Duration(seconds: 2),
             () => userController.updateBalance(null));
         // Get.offNamed('/RoomList');
+        RoomListPage.isMounted = true;
         return Future.value(true);
       },
       child: SafeArea(

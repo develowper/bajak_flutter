@@ -17,6 +17,8 @@ class App {
   final String eitaaLink;
   final String marketLink;
   final String policyLink;
+  final String updateMessage;
+  final String updateLink;
   final List questions;
   String whatsappLink;
   String? appName;
@@ -41,6 +43,8 @@ class App {
     this.whatsappLink = '',
     this.marketLink = '',
     this.policyLink = '',
+    this.updateMessage = '',
+    this.updateLink = '',
     this.versionUpdate,
     this.questions = const [],
     this.supportLinks = const [],
@@ -61,12 +65,12 @@ class App {
 
     return App(
         socketLink: json['links']?['socket'] ?? Variable.DOMAIN,
-        needUpdate: int.tryParse("${json['version']}") == null
+        needUpdate: int.tryParse("${json['app_info']?['version']}") == null
             ? false
             : int.tryParse(packageInfo.buildNumber) == null
                 ? false
                 : int.parse(packageInfo.buildNumber) <
-                        int.parse("${json['version']}")
+                        int.parse("${json['app_info']?['version']}")
                     ? true
                     : false,
         versionName: packageInfo.version,
@@ -74,6 +78,9 @@ class App {
         packageName: packageInfo.packageName,
         buildNumber: packageInfo.buildNumber,
         phone: json['phone'] ?? '',
+        updateMessage:
+            json['app_info']?['update_message'] ?? 'new_version_exists'.tr,
+        updateLink: json['app_info']?['update_link'] ?? '',
         versionUpdate: json['version'] ?? null,
         supportLinks: json['support_links'] ?? [],
         policyLink: json['links']?['policy'] ?? '',

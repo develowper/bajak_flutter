@@ -16,7 +16,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:games/widget/MyDialog.dart';
 import 'package:games/widget/MyNativeAdv.dart';
+import 'package:games/widget/ScrollingText.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -86,7 +88,8 @@ Future<void> initUniLinks() async {
 void main() async {
   // runZonedGuarded(() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
   await GetStorage.init();
   await initUniLinks();
   WakelockPlus.disable();
@@ -149,7 +152,7 @@ class MyApp extends StatelessWidget {
         unknownRoute: GetPage(name: '/', page: () => MyHomePage()),
         initialRoute: '/',
         opaqueRoute: true,
-        defaultTransition: Transition.fade,
+        defaultTransition: Transition.native,
         // 👈 تغییر پیش‌فرض
         // navigatorObservers: [GetObserver()],
         getPages: [
@@ -308,16 +311,16 @@ class MainPage extends StatefulWidget {
       settingController.showUpdateDialogIfRequired();
 
       //
-      Future.delayed(
-        const Duration(seconds: 1),
-        () {
-          // Get.find<RoomController>()
-          //     .startGame(daberna: Daberna.fromJson(settingController.game));
-          //   final result = Get.toNamed('/daberna/RoomList',
-          //       arguments: settingController.games[0]);
-          // Get.toNamed('/Transactions');
-        },
-      );
+      // Future.delayed(
+      //   const Duration(seconds: 1),
+      //   () {
+      //     // Get.find<RoomController>()
+      //     //     .startGame(daberna: Daberna.fromJson(settingController.game));
+      //     final result = Get.toNamed('/daberna/RoomList',
+      //         arguments: settingController.games[0]);
+      //     // Get.toNamed('/WinWheel');
+      //   },
+      // );
     });
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     //   final _state = _sideMenuKey.currentState;
@@ -387,6 +390,56 @@ class _MainPageState extends State<MainPage> {
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           children: [
+            Column(
+              children: [
+                for (var msg in widget.settingController.headerMessages)
+                  Obx(
+                    () => Visibility(
+                      visible: msg['visible'].value,
+                      child: InkWell(
+                        onTap: () => Get.dialog(
+                          MyDialog(
+                            onCancelPressed: () {
+                              msg['visible'].value = false;
+                              Navigator.of(context, rootNavigator: true).pop();
+
+                              // Get.back(
+                              //   canPop: true,
+                              // );
+                            },
+                            widget: Text(
+                              msg['msg'],
+                              style: widget.style.textMediumStyle,
+                            ),
+                            message: '',
+                          ),
+                          barrierDismissible: true,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.remove_red_eye_rounded,
+                              color: Colors.white,
+                            ),
+                            Expanded(
+                              child: ScrollingText(
+                                text: msg['msg'],
+                                repeat: true,
+                                padding:
+                                    EdgeInsets.all(widget.style.cardMargin),
+                                direction: AxisDirection.left,
+                                speed: 40,
+                                backgroundColor: Colors.black38,
+                                style: widget.style.textSmallLightStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+              ],
+            ),
             for (var game in widget.settingController.games)
               FittedBox(
                 fit: BoxFit.scaleDown,

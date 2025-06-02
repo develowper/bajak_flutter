@@ -359,8 +359,7 @@ class _BlackJackGameState extends State<BlackJackGame>
                           width: widget.style.imageHeight / 2,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image:
-                                  AssetImage("assets/images/frame_cube.png"),
+                              image: AssetImage("assets/images/frame_cube.png"),
                               repeat: ImageRepeat.noRepeat,
                               fit: BoxFit.fill,
                             ),
@@ -1822,7 +1821,6 @@ class _BlackJackGameState extends State<BlackJackGame>
           ],
         ),
       ),
-      context: context,
       message: '',
       onCancelPressed: () {},
     ));

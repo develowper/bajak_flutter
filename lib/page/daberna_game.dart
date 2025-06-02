@@ -8,6 +8,7 @@ import 'package:games/controller/UserController.dart';
 import 'package:games/helper/extensions.dart';
 import 'package:games/helper/helpers.dart';
 import 'package:games/model/Daberna.dart';
+import 'package:games/page/room_list.dart';
 import 'package:games/widget/AppBar.dart';
 import 'package:games/widget/BlinkingSwitch.dart';
 import 'package:flutter/foundation.dart';
@@ -43,7 +44,7 @@ class DabernaGame extends StatelessWidget {
   num winnersPrize = 0;
   num rowWinnersPrize = 0;
 
-  bool mounted = false;
+  bool mounted = true;
 
   RxDouble cellSize = 32.0.obs;
   RxBool gameExists = false.obs;
@@ -107,14 +108,13 @@ class DabernaGame extends StatelessWidget {
     });
     daberna.numbers.insert(0, ' ');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      mounted = true;
+      // mounted = true;
       // for (var i = 0; i < 63; i++) {
       //   daberna.boards.forEach((board) {
       //     board.card.forEach((row) {
       //       row.forEach((col) {
       //         if (col.value == "${daberna.numbers[playIndex]}") {
       //           col.value = '';
-      //
       //           col.refresh();
       //         }
       //       });
@@ -141,7 +141,6 @@ class DabernaGame extends StatelessWidget {
         onPopInvoked: (didPop) async {
           mounted = false;
           player.stop();
-          player.stop();
           player.dispose();
           confettiController.dispose();
           callTimer.cancel();
@@ -149,7 +148,7 @@ class DabernaGame extends StatelessWidget {
           // _audioPlayer.dispose();
           Future.delayed(const Duration(seconds: 2),
               () => userController.updateBalance(null));
-
+          RoomListPage.isMounted = true;
           return Future.value(true);
         },
         child: Scaffold(
@@ -486,11 +485,10 @@ class DabernaGame extends StatelessWidget {
                                 ? _tableWidth.value! / (columns + 1)
                                 : constraints.maxWidth / (columns + 1));
                             cellSize.value = min(cellSize.value, 32);
-                            return Obx(
-                              () => level.value > winLevel
-                                  ? WinnersWidget()
-                                  : CardsWidget(),
-                            );
+                            return Obx(() => Column(children: [
+                                  if (level.value > winLevel) WinnersWidget(),
+                                  Expanded(child: CardsWidget())
+                                ]));
                           }))
                     ],
                   ),
@@ -499,6 +497,7 @@ class DabernaGame extends StatelessWidget {
   }
 
   Future playSound(index) async {
+    // print("${soundOn.value},${daberna.numbers[index]},${mounted}");
     if (soundOn.value && daberna.numbers[index] != ' ' && mounted) {
       final duration = await player.setAsset(// Load a URL
           "assets/sounds/numbers/${daberna.numbers[index]}.mp3");
@@ -535,7 +534,7 @@ class DabernaGame extends StatelessWidget {
               Future.delayed(Duration(milliseconds: 500), () {
                 col.value = '';
                 if (daberna.rowWinners
-                        .map((r) => r['user_id'])
+                        .map((r) => "${r['user_id']}")
                         .contains(board.playerId) &&
                     rowWinLevel == index &&
                     row.every((c) => c == '')) {
@@ -983,7 +982,7 @@ class DabernaGame extends StatelessWidget {
           child: ConfettiWidget(
             confettiController: confettiController,
             blastDirectionality: BlastDirectionality.explosive,
-            particleDrag: .1,
+            particleDrag: .05,
             // blastDirection: pi / 2,
             shouldLoop: false,
             createParticlePath: _drawStar,
@@ -994,12 +993,12 @@ class DabernaGame extends StatelessWidget {
               Colors.orange,
               Colors.purple,
             ],
-            // maxBlastForce: 40,
+            maxBlastForce: 60,
             // increase for stronger rain
-            // minBlastForce: 2,
-            emissionFrequency: 0.4,
-            numberOfParticles: 20,
-            gravity: 0.3,
+            minBlastForce: 20,
+            emissionFrequency: 0.6,
+            numberOfParticles: 100,
+            gravity: .9,
           ),
         ),
       ],
